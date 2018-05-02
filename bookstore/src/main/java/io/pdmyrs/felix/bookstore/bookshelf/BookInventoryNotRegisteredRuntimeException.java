@@ -1,4 +1,4 @@
-package io.pdmyrs.felix.bookstore.bookshelf.services.impl;
+package io.pdmyrs.felix.bookstore.bookshelf;
 
 public class BookInventoryNotRegisteredRuntimeException extends RuntimeException
 {

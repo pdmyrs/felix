@@ -16,6 +16,11 @@
   <description>We Buy and Sell Books</description>
 
   <dependencies>
+    <dependency>
+      <groupId>org.apache.felix</groupId>
+      <artifactId>org.apache.felix.framework</artifactId>
+      <version>5.6.10</version>
+    </dependency>
   </dependencies>
 
 
@@ -28,7 +33,7 @@
         <extensions>true</extensions>
           <configuration>
 	          <instructions>
-	            <Bundle-Category>PDMYRS Apps</Bundle-Category>
+	            <Bundle-Category>PDMYRS</Bundle-Category>
 	            <Bundle-SymbolicName>${artifactId}
 	            </Bundle-SymbolicName>
 	              <Export-Package>
@@ -43,7 +48,7 @@
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
         <configuration>
-          <source>1.8/source>
+          <source>1.8</source>
           <target>1.8</target>
         </configuration>
       </plugin>

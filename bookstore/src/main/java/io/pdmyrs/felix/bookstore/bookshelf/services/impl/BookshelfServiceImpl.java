@@ -8,6 +8,16 @@ import java.util.Set;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
 
+import io.pdmyrs.felix.bookstore.bookshelf.BookAlreadyExistsException;
+import io.pdmyrs.felix.bookstore.bookshelf.BookInventoryNotRegisteredRuntimeException;
+import io.pdmyrs.felix.bookstore.bookshelf.BookNotFoundException;
+import io.pdmyrs.felix.bookstore.bookshelf.InvalidBookException;
+import io.pdmyrs.felix.bookstore.bookshelf.InvalidCredentialsException;
+import io.pdmyrs.felix.bookstore.bookshelf.services.BookshelfService;
+import io.pdmyrs.felix.bookstore.inventory.Book;
+import io.pdmyrs.felix.bookstore.inventory.BookInventory;
+import io.pdmyrs.felix.bookstore.inventory.MutableBook;
+
 
 public class BookshelfServiceImpl implements BookshelfService
 {
@@ -20,7 +30,8 @@ public class BookshelfServiceImpl implements BookshelfService
     }
 
     private BookInventory lookupBookInventory() {
-        ServiceReference ref = this.context.getServiceReference(BookInventory.class.getName());
+        @SuppressWarnings("unchecked")
+		ServiceReference<BookInventory> ref = (ServiceReference<BookInventory>) this.context.getServiceReference(BookInventory.class.getName());
         if (ref == null) {
             throw new BookInventoryNotRegisteredRuntimeException(BookInventory.class.getName());
         }
@@ -67,40 +78,8 @@ public class BookshelfServiceImpl implements BookshelfService
         MutableBook book = inv.createBook(isbn);
         book.setTitle(title);
         book.setAuthor(author);
-        book.setGroup(group);
-        book.setGrade(grade);
 
         inv.storeBook(book);
-    }
-
-    public void modifyBookGroup(String session, String isbn, String group)
-                    throws BookNotFoundException, InvalidBookException {
-        checkSession(session);
-
-        BookInventory inv = lookupBookInventory();
-
-        MutableBook book = inv.loadBookForEdit(isbn);
-        book.setGroup(group);
-
-        inv.storeBook(book);
-    }
-
-    public void modifyBookGrade(String session, String isbn, int grade)
-                    throws BookNotFoundException, InvalidBookException {
-        checkSession(session);
-
-        BookInventory inv = lookupBookInventory();
-
-        MutableBook book = inv.loadBookForEdit(isbn);
-        book.setGrade(grade);
-
-        inv.storeBook(book);
-    }
-
-    public Set<String> getGroups(String session) {
-        checkSession(session);
-        BookInventory inv = lookupBookInventory();
-        return inv.getGroups();
     }
 
     public void removeBook(String session, String isbn) throws BookNotFoundException {
@@ -109,37 +88,14 @@ public class BookshelfServiceImpl implements BookshelfService
         inv.removeBook(isbn);
     }
 
-    public Set<String> searchBooksByAuthor(String session, String authorLike) {
-        checkSession(session);
-        BookInventory inv = lookupBookInventory();
-        Map<SearchCriteria, String> crits = new HashMap<SearchCriteria, String>();
-        crits.put(SearchCriteria.AUTHOR_LIKE, authorLike);
-        return inv.searchBooks(crits);
-    }
 
-    public Set<String> searchBooksByGroup(String session, String groupLike) {
-        checkSession(session);
-        BookInventory inv = lookupBookInventory();
-        Map<SearchCriteria, String> crits = new HashMap<SearchCriteria, String>();
-        crits.put(SearchCriteria.GROUP_LIKE, groupLike);
-        return inv.searchBooks(crits);
-    }
+	@Override
+	public void addBook(String session, String isbn, String title, String author)
+			throws BookAlreadyExistsException, InvalidBookException {
+		// TODO Auto-generated method stub
+		
+	}
 
-    public Set<String> searchBooksByTitle(String session, String titleLike) {
-        checkSession(session);
-        BookInventory inv = lookupBookInventory();
-        Map<SearchCriteria, String> crits = new HashMap<SearchCriteria, String>();
-        crits.put(SearchCriteria.TITLE_LIKE, titleLike);
-        return inv.searchBooks(crits);
-    }
 
-    public Set<String> searchBooksByGrade(String session, int gradeLower, int gradeUpper) {
-        checkSession(session);
-        BookInventory inv = lookupBookInventory();
-        Map<SearchCriteria, String> crits = new HashMap<SearchCriteria, String>();
-        crits.put(SearchCriteria.GRADE_LT, Integer.toString(gradeLower));
-        crits.put(SearchCriteria.GRADE_GT, Integer.toString(gradeUpper));
-        return inv.searchBooks(crits);
-    }
 
 }

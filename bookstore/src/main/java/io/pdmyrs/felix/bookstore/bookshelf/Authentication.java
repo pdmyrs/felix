@@ -1,4 +1,4 @@
-package io.pdmyrs.felix.bookstore.services;
+package io.pdmyrs.felix.bookstore.bookshelf;
 
 public interface Authentication
 {

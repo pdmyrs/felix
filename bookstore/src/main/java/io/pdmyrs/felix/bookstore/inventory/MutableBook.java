@@ -1,4 +1,4 @@
-package com.packtpub.felix.bookshelf.inventory.api;
+package io.pdmyrs.felix.bookstore.inventory;
 
 /** Extends the {@link Book} interface making it mutable. */
 public interface MutableBook extends Book

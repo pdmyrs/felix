@@ -1,20 +1,17 @@
 package io.pdmyrs.felix.bookstore.bookshelf.services.impl;
 
-import java.util.Set;
-
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
 import org.osgi.framework.ServiceRegistration;
 
-import com.packtpub.felix.bookshelf.inventory.api.BookNotFoundException;
-import com.packtpub.felix.bookshelf.inventory.api.InvalidBookException;
-import com.packtpub.felix.bookshelf.service.api.BookAlreadyExistsException;
-import com.packtpub.felix.bookshelf.service.api.BookshelfService;
-import com.packtpub.felix.bookshelf.service.api.InvalidCredentialsException;
+import io.pdmyrs.felix.bookstore.bookshelf.BookAlreadyExistsException;
+import io.pdmyrs.felix.bookstore.bookshelf.InvalidBookException;
+import io.pdmyrs.felix.bookstore.bookshelf.InvalidCredentialsException;
+import io.pdmyrs.felix.bookstore.bookshelf.services.BookshelfService;
 
-public class BookshelfServiceImplActivator implements BundleActivator
-{
+
+public class BookshelfServiceImplActivator implements BundleActivator {
     ServiceRegistration reg = null;
 
     public void start(BundleContext context) throws Exception {
@@ -46,10 +43,10 @@ public class BookshelfServiceImplActivator implements BundleActivator
         // add a few books
         try {
             System.out.println("\nAdding books. . .");
-            service.addBook(session, "123-4567890100", "Book 1 Title", "John Doe", "Group 1", 0);
-            service.addBook(session, "123-4567890101", "Book 2 Title", "Will Smith", "Group 1", 0);
-            service.addBook(session, "123-4567890200", "Book 3 Title", "John Doe", "Group 2", 0);
-            service.addBook(session, "123-4567890201", "Book 4 Title", "Jane Doe", "Group 2", 0);
+            service.addBook(session, "123-4567890100", "Book 1 Title", "John Doe");
+            service.addBook(session, "123-4567890101", "Book 2 Title", "Will Smith");
+            service.addBook(session, "123-4567890200", "Book 3 Title", "John Doe");
+            service.addBook(session, "123-4567890201", "Book 4 Title", "Jane Doe");
         }
         catch (BookAlreadyExistsException e) {
             e.printStackTrace();
@@ -59,18 +56,7 @@ public class BookshelfServiceImplActivator implements BundleActivator
             e.printStackTrace();
             return;
         }
-        // and test search
-        String authorLike = "%Doe";
-        System.out.println("Searching books with author: "+authorLike);
-        Set<String> results = service.searchBooksByAuthor(session, authorLike);
-        for (String isbn : results) {
-            try {
-                System.out.println(" - " + service.getBook(session, isbn));
-            }
-            catch (BookNotFoundException e) {
-                System.err.println(e.getMessage());
-            }
-        }
+
     }
 
     public void stop(BundleContext context) throws Exception {

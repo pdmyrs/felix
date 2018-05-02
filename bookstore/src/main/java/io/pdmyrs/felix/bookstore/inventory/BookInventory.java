@@ -1,7 +1,11 @@
-package com.packtpub.felix.bookshelf.inventory.api;
+package io.pdmyrs.felix.bookstore.inventory;
 
 import java.util.Map;
 import java.util.Set;
+
+import io.pdmyrs.felix.bookstore.bookshelf.BookAlreadyExistsException;
+import io.pdmyrs.felix.bookstore.bookshelf.BookNotFoundException;
+import io.pdmyrs.felix.bookstore.bookshelf.InvalidBookException;
 
 public interface BookInventory
 {

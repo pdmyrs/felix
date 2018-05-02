@@ -1,4 +1,4 @@
-package io.pdmyrs.felix.appaaa.services.inventory;
+package io.pdmyrs.felix.bookstore.inventory;
 
 /** Holds information on a book in the bookshelf. */
 public interface Book {
